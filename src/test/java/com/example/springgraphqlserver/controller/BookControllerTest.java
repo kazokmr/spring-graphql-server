@@ -14,10 +14,15 @@ class BookControllerTest {
     @Test
     void shouldGetFirstBook() {
         this.graphQlTester
+                // 指定したファイル名およびqueryのariasを指定する
                 .documentName("bookDetails")
+                // queryに渡すパラメータの値
                 .variable("id", "book-1")
+                // GraphQLリクエストを送信し、レスポンスデータまたはエラーを取得する
                 .execute()
+                // レスポンスの"data"セクション内のJsonキーの値を指定し、Jsonオブジェクトを抽出する
                 .path("bookById")
+                // 取得したJsonオブジェクトと比較する
                 .matchesJson("""
                         {
                             "id": "book-1",
@@ -29,5 +34,14 @@ class BookControllerTest {
                             }
                         }
                         """);
+        // レスポンスデータをオブジェクトにしてデータを比較する例
+//                .entity(Book.class)
+//                .matches(book -> book.id().equals("book-1"));
+        // Authorオブジェクトを取りたい場合のPath指定
+//                .path("bookById.author")
+//                .entity(Author.class)
+//                .matches(author -> author.firstName().equals("Joshua"))
+//                .matches(author -> author.lastName().equals("Block"));
+
     }
 }
