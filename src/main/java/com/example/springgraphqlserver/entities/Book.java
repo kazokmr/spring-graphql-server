@@ -24,4 +24,7 @@ public record Book(String id, String name, int pageCount, String authorId) {
         return book;
     }
 
+    public static List<Book> getAll() {
+        return books;
+    }
 }
