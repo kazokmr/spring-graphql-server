@@ -2,6 +2,10 @@ type Query{
     bookById(id: ID): Book
 }
 
+type Mutation{
+    addBook(input: AddingBookInput!): UpdateBookPayload
+}
+
 type Book{
     id: ID
     name: String
@@ -13,4 +17,16 @@ type Author {
     id: ID
     firstName: String
     lastName: String
+}
+
+input AddingBookInput{
+    name: String
+    pageCount: Int
+    author_firstName: String
+    author_lastName: String
+}
+
+type UpdateBookPayload {
+    success: Boolean!
+    book: Book
 }
