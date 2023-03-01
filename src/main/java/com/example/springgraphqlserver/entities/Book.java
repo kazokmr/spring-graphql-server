@@ -6,7 +6,7 @@ import java.util.List;
 
 public record Book(String id, String name, int pageCount, String authorId) {
 
-    private static List<Book> books = new ArrayList<>(
+    private static final List<Book> books = new ArrayList<>(
             Arrays.asList(
                     new Book("book-1", "Effective Java", 416, "author-1"),
                     new Book("book-2", "Hitchhiker's Guide to the Galaxy", 208, "author-2"),

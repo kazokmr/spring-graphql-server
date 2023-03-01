@@ -6,7 +6,7 @@ import java.util.List;
 
 public record Author(String id, String firstName, String lastName) {
 
-    private static List<Author> authors = new ArrayList<>(
+    private static final List<Author> authors = new ArrayList<>(
             Arrays.asList(
                     new Author("author-1", "Joshua", "Block"),
                     new Author("author-2", "Douglas", "Adams"),
