@@ -1,5 +1,5 @@
 type Query{
-    bookById(id: ID): Book
+    bookById(id: ID!): Book
 }
 
 type Mutation{
@@ -7,20 +7,20 @@ type Mutation{
 }
 
 type Book{
-    id: ID
-    name: String
+    id: ID!
+    name: String!
     pageCount: Int
     author: Author
 }
 
 type Author {
-    id: ID
+    id: ID!
     firstName: String
     lastName: String
 }
 
 input AddingBookInput{
-    name: String
+    name: String!
     pageCount: Int
     author_firstName: String
     author_lastName: String
