@@ -1,7 +1,8 @@
 package com.example.springgraphqlserver.controller;
 
+import com.example.springgraphqlserver.entities.Author;
 import com.example.springgraphqlserver.form.UpdateBookPayload;
-import graphql.Assert;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,15 +55,17 @@ class BookControllerTest {
     @DisplayName("登録した本がレスポンスに渡されること")
     void addBook() {
         this.graphQlTester
-                // クエリを直接定義する
+                // クエリを直接定義する。評価するFieldsを指定すること
                 .document("""
                         mutation addBook($input: AddingBookInput!){
                             addBook(input: $input) {
+                                success
                                 book{
                                     id
                                     name
                                     pageCount
                                     author {
+                                        id
                                         firstName
                                         lastName
                                     }
@@ -80,14 +83,38 @@ class BookControllerTest {
                 )
                 // Mutationを実行する
                 .execute()
-                // レスポンスデータからbookを取得する（UpdateBookPayload）
+                // レスポンスデータをObjectに変換する
                 .path("addBook")
                 .entity(UpdateBookPayload.class)
                 .satisfies(payload -> {
-                    // FIXME なぜかFalseが渡される。Trueしかセットしていないのに
-//                    Assert.assertTrue(payload.success());
-                    Assert.assertTrue(payload.book().name().equals("test"));
-                    Assert.assertTrue(payload.book().pageCount() == 528);
+                    SoftAssertions assertions = new SoftAssertions();
+                    assertions.assertThat(payload.success()).as("成功したのでtrueが返る").isTrue();
+                    assertions.assertThat(payload.book().name()).as("登録した書籍名").isEqualTo("test");
+                    assertions.assertThat(payload.book().pageCount()).as("書籍のページ数").isEqualTo(528);
+                    assertions.assertAll();
+                })
+                .path("addBook.book.author")
+                .entity(Author.class)
+                .satisfies(author -> {
+                    SoftAssertions assertions = new SoftAssertions();
+                    assertions.assertThat(author.firstName()).isEqualTo("T");
+                    assertions.assertThat(author.lastName()).isEqualTo("O");
+                    assertions.assertAll();
                 });
+//                .matchesJsonStrictly("""
+//                        {
+//                            "success": true,
+//                            "book": {
+//                                "id": "book-4",
+//                                "name": "test",
+//                                "pageCount": 528,
+//                                "author": {
+//                                    "id": "author-4",
+//                                    "firstName": "T",
+//                                    "lastName": "O"
+//                                }
+//                            }
+//                        }
+//                        """);
     }
 }
