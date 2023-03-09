@@ -3,6 +3,8 @@ package com.example.springgraphqlserver.entities;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public record Author(String id, String firstName, String lastName) {
 
@@ -27,5 +29,13 @@ public record Author(String id, String firstName, String lastName) {
             authors.add(author);
         }
         return author;
+    }
+
+    public static Map<Book, Author> getAllByBook(List<Book> books) {
+        return books.stream()
+                .collect(Collectors.toMap(
+                        book -> book,
+                        book -> getById(book.authorId())
+                ));
     }
 }

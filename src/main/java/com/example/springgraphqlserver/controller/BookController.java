@@ -5,12 +5,13 @@ import com.example.springgraphqlserver.entities.Book;
 import com.example.springgraphqlserver.form.AddingBookInput;
 import com.example.springgraphqlserver.form.UpdateBookPayload;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.BatchMapping;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class BookController {
@@ -25,10 +26,21 @@ public class BookController {
         return Book.getAll();
     }
 
-    @SchemaMapping
-    public Author author(Book book) {
-        return Author.getById(book.authorId());
+//    @SchemaMapping
+//    public Author author(Book book) {
+//        return Author.getById(book.authorId());
+//    }
+
+    @BatchMapping
+    public Map<Book, Author> author(List<Book> books) {
+        return Author.getAllByBook(books);
     }
+
+//    @BatchMapping
+//    public List<Author> author(List<Book> books) {
+//        return Author.getAllByBook(books).values().stream().toList();
+//    }
+
 
     @MutationMapping
     public UpdateBookPayload addBook(@Argument AddingBookInput input) {
