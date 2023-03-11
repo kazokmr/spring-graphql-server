@@ -1,23 +1,29 @@
-package com.example.springgraphqlserver.controller;
+package com.example.springgraphqlserver.presentation.controller;
 
-import com.example.springgraphqlserver.entities.Author;
-import com.example.springgraphqlserver.entities.Book;
-import com.example.springgraphqlserver.form.AddingBookInput;
-import com.example.springgraphqlserver.form.UpdateBookPayload;
+import com.example.springgraphqlserver.domain.entities.Author;
+import com.example.springgraphqlserver.domain.entities.Book;
+import com.example.springgraphqlserver.presentation.form.AddingBookInput;
+import com.example.springgraphqlserver.presentation.form.UpdateBookPayload;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.BatchMapping;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Map;
 
 @Controller
+@Validated
 public class BookController {
 
     @QueryMapping
-    public Book bookById(@Argument String id) {
+    public Book bookById(
+            @Argument
+            @Pattern(regexp = "\\Abook-[1-9]\\d*$", message = "idは\"book-\"の後に数値を入れてください")
+            String id) {
         return Book.getById(id);
     }
 

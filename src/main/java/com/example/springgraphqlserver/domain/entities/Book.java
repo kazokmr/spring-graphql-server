@@ -1,10 +1,14 @@
-package com.example.springgraphqlserver.entities;
+package com.example.springgraphqlserver.domain.entities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public record Book(String id, String name, int pageCount, String authorId) {
+public record Book(
+        String id,
+        String name,
+        int pageCount,
+        String authorId) {
 
     private static final List<Book> books = new ArrayList<>(
             Arrays.asList(

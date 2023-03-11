@@ -1,7 +1,7 @@
-package com.example.springgraphqlserver.controller;
+package com.example.springgraphqlserver.presentation.controller;
 
-import com.example.springgraphqlserver.entities.Author;
-import com.example.springgraphqlserver.form.UpdateBookPayload;
+import com.example.springgraphqlserver.domain.entities.Author;
+import com.example.springgraphqlserver.presentation.form.UpdateBookPayload;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

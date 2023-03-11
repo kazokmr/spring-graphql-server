@@ -1,4 +1,4 @@
-package com.example.springgraphqlserver.entities;
+package com.example.springgraphqlserver.domain.entities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
