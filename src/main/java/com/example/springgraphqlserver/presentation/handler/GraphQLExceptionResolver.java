@@ -6,13 +6,14 @@ import graphql.schema.DataFetchingEnvironment;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
 import org.springframework.graphql.execution.ErrorType;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GraphQLExceptionResolver extends DataFetcherExceptionResolverAdapter {
 
     @Override
-    protected GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {
+    protected GraphQLError resolveToSingleError(@NonNull Throwable ex, @NonNull DataFetchingEnvironment env) {
         if (ex instanceof ConstraintViolationException) {
             return GraphqlErrorBuilder.newError()
                     .errorType(ErrorType.BAD_REQUEST)
