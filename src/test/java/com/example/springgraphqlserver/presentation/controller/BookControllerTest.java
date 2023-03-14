@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
+import org.springframework.graphql.ResponseError;
+import org.springframework.graphql.execution.ErrorType;
 import org.springframework.graphql.test.tester.GraphQlTester;
 
 import java.util.Map;
@@ -116,5 +118,22 @@ class BookControllerTest {
 //                            }
 //                        }
 //                        """);
+    }
+
+    @Test
+    @DisplayName("引数の値が書式と合わなければ errorレスポンスを返す")
+    void checkFirstValidation() {
+        this.graphQlTester
+                .documentName("bookDetails")
+                .variable("id", "aiueo")
+                .execute()
+                .errors()
+                .satisfy(error -> {
+                    ResponseError res = error.get(0);
+                    SoftAssertions assertions = new SoftAssertions();
+                    assertions.assertThat(res.getErrorType()).isEqualTo(ErrorType.BAD_REQUEST);
+                    assertions.assertThat(res.getMessage()).isEqualTo("bookById.id: idは\"book-\"の後に数値を入れてください");
+                    assertions.assertAll();
+                });
     }
 }
